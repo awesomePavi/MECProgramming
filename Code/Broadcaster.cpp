@@ -14,6 +14,6 @@ void  Broadcaster::setFreqFm(int freq) {
 }
 
 int  Broadcaster::broadCast(char * message) {
-    std::cout << "Broadcasting Message: " << message <<std::endl;
+    std::cout << "Broadcasting Message: " << message <<std::endl << std::flush;
     return 1;
 }

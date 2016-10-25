@@ -6,6 +6,7 @@
 #include "Encoder.h"
 
 char* Encoder::encodeString(char* input){
-    std::cout << "Encoding Message: " << input <<std::endl;
+    std::cout << "Encoding Message: " << input <<std::endl <<std::flush;
+   // strcat(input, " ~ Encoded");
     return input;
 }

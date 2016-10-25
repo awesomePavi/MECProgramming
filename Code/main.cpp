@@ -7,98 +7,83 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <thread>
+#include <chrono>
+#include "Setup.h"
+#include "Selector.h"
+#include "PriorityQueue.h"
+
+
 using namespace std;
 
-/*
- * 
- */
-
-class data{
-public:
-    char weather;
-    int priority;
-    char type;
-};
-
-struct node{
-    
-    data info;
-    node *next;
-};
-
-
-
-class queue{
-//    char* weather; //need to make an linked list of pointers, each pointer will have weather information
-    private:
-        node *front;
-        node *back;
-        
-    public:
-        
-        queue();
-        void enqueue(int p);
-        int dequeue();
-        void display();
-};
-
-queue :: queue()
-{
-    back = NULL;
-    front =NULL;  
+void loop(Setup setup){
+    Selector loop;
+    loop.mainLoop(setup);
 }
 
-void queue :: enqueue(int p)
-{
-    node *temp= new node;
-    temp ->priority = p;
-    temp -> next=NULL;
-    if (front == NULL)
-    {
-        temp= front;
+void genWeather(Setup access){
+    char messages[10][255] = {
+            {"Great Weather"},
+            {"Sunny"},
+            {"Cloudy"},
+            {"Cold"},
+            {"HOTT"},
+            {"Wet"},
+            {"Musky"},
+            {"Humid"},
+            {"Dry"},
+            {"Salty"}};
+
+
+    int iterations =0;
+    while (iterations < 50) {
+        iterations++;
+        bool boolVal = (rand() % 50) == 25;
+        access.DataIn('c', boolVal, messages[rand() % 10]);
+        this_thread::sleep_for(chrono::seconds(rand() % 2));
     }
-    else { back->next= temp;}
-    
-    back = temp;
 }
 
-int queue :: dequeue(){
-    
-    node *temp = new node;
-    int val;
-    if(front == NULL){
-        cout<<"\nQueue is Emtpty\n";
-    }else{
-        temp = front;
-        val = temp ->priority;
-        front = front->next;
-        cout<<"The data Dequeued is "<<temp->priority;
-        delete temp;
+void genCurrent(Setup access) {
+    char messages[10][255] = {
+    {"North"},
+    {"South"},
+    {"East"},
+    {"West"},
+    {"North East"},
+    {"North West"},
+    {"South East"},
+    {"South West"},
+    {"UP"},
+    {"Down"}};
+
+
+    int iterations =0;
+    while (iterations < 50) {
+        iterations++;
+        bool boolVal = (rand() % 50) == 25;
+        access.DataIn('c', boolVal, messages[rand() % 10]);
+       this_thread::sleep_for(chrono::seconds(rand() % 2));
     }
-    return val;
 }
 
-int queues (char* weather, char* current);
-//data in information needs three values , type , priority and message
-//the type is used to determine which queue information will go to
 int main(int argc, char** argv) {
-    char w[5]="bob";
-    char q[5]="dan";
-    int p=1;
-    int x=queues(w,q);
-    
-    queue b;
-    b.enqueue(0);
-    int t=b.dequeue();
-    cout <<t;
-    return 0;
-}
+    cout << "start" <<endl;
 
-int queues (char* weather, char* current)
-{
-    
-    cout << weather;
-    return 1;
+
+
+
+    Setup setup;
+    setup.setUp();
+
+    thread module(loop,setup);
+    thread weatherGen (genWeather,setup);
+    thread currentGen (genCurrent,setup);
+    weatherGen.join();
+    currentGen.join();
+    module.join();
+
+    return 0;
 }
 
 

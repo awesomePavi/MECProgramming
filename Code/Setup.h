@@ -7,12 +7,16 @@
 
 
 #include "Broadcaster.h"
+#include "PriorityQueue.h"
 
 class Setup {
 public:
     int setUp();
     void testHardware();
     Broadcaster broadcaster;
+    PriorityQueue* weatherQueue;
+    PriorityQueue* currentQueue;
+    void DataIn(char, bool, char*);
 };
 
 

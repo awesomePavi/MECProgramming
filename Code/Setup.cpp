@@ -27,8 +27,21 @@ int Setup::setUp() {
     //setup broadcaster
     broadcaster.setFreqAm(amGen);
     broadcaster.setFreqFm(fmGen);
+
+    weatherQueue = new PriorityQueue;
+    currentQueue = new PriorityQueue;
+
+    return 0;
 }
 
 void Setup::testHardware() {
     std::cout << "hardware Tested";
+}
+
+void Setup::DataIn(char module, bool priority, char * message) {
+    if (module == 'w'){
+        weatherQueue -> queue(priority,message);
+    }else{
+        currentQueue ->queue(priority,message);
+    }
 }
